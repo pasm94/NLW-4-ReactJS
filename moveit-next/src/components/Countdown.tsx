@@ -1,18 +1,17 @@
-import { useState, useEffect, useCallback, useContext } from "react";
-import { ChallengesContext } from "../contexts/ChallengesContext";
+import { useContext } from "react";
 import styles from "../styles/components/Countdown.module.css";
 
-let countdownTimeout: NodeJS.Timeout;
+import { CountdownContext } from "../contexts/CountdownContext";
 
 export function Countdown() {
-  const { startNewChallenge } = useContext(ChallengesContext);
-
-  const [time, setTime] = useState(0.05 * 60);
-  const [isActive, setIsActive] = useState(false);
-  const [hasFinished, setHasFinished] = useState(false);
-
-  const minutes = Math.floor(time / 60);
-  const seconds = time % 60;
+  const {
+    seconds,
+    minutes,
+    hasFinished,
+    isActive,
+    startCountdown,
+    resetCountdown,
+  } = useContext(CountdownContext);
 
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, "0").split("");
   const [secondLeft, secondRight] = String(seconds).padStart(2, "0").split("");
@@ -20,28 +19,6 @@ export function Countdown() {
   padStart(2,"0") -> caso a string soh tenha um caracter
   ex: 5 minutos = "5", ele adiciona um 0 a esquerda
   */
-
-  function startCountdown() {
-    setIsActive(true);
-  }
-
-  function resetCountdown() {
-    clearTimeout(countdownTimeout);
-    setIsActive(false);
-    setTime(0.05 * 60);
-  }
-
-  useEffect(() => {
-    if (isActive && time > 0) {
-      countdownTimeout = setTimeout(() => {
-        setTime(time - 1);
-      }, 1000);
-    } else if (isActive && time === 0) {
-      setHasFinished(true);
-      setIsActive(false);
-      startNewChallenge();
-    }
-  }, [isActive, time]);
 
   return (
     <div>
