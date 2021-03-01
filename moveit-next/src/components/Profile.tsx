@@ -13,7 +13,7 @@ export function Profile() {
         <p>
           {/* arquivos na pasta public, sao publicos automaticamente */}
           <img src="icons/level.svg" alt="Level" />
-          {level}
+          Level {level}
         </p>
       </div>
     </div>
